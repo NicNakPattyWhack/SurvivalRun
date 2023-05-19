@@ -33,7 +33,7 @@ class Tree extends Feature {
     this.leafTint = color(2, 123, 44);
     this.sway = createVector();
     this.lootTable = [
-      { quantity: 1, type: "wood" }
+      { quantity: 4, name: "wood" }
     ];
   }
 
@@ -62,7 +62,7 @@ class Rock extends Feature {
     this.radius = random(20, 45);
     this.strength = 2;
     this.lootTable = [
-      { quantity: 1, type: "stone" }
+      { quantity: 5, name: "stone" }
     ];
   }
 

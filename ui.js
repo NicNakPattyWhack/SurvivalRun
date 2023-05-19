@@ -21,9 +21,9 @@ class Backpack {
     return false;
   }
 
-  display() {
-    for (let slot of this.slots) {
-      itemData[slot.name].display();
-    }
-  }
+  // display() {
+  //   for (let slot of this.slots) {
+  //     itemData[slot.name].display();
+  //   }
+  // }
 }

@@ -17,15 +17,15 @@ class Chunk {
 
   generate() {
     if (!this.generated) {
-    //   if (this.x == 0 && this.y == 0) {
+      //   if (this.x == 0 && this.y == 0) {
 
-    //   for (let i = 0; i < 12; i++) {
-    //     let angle = map(i, 0, 12, 0, TWO_PI);
-    //     let x = cos(angle) * 100 + chunkSize / 2;
-    //     let y = sin(angle) * 100 + chunkSize / 2;
-    //     this.features.push(new Tree(x, y, this.x * chunkSize, this.y * chunkSize));
-    //   }
-    // }
+      //   for (let i = 0; i < 12; i++) {
+      //     let angle = map(i, 0, 12, 0, TWO_PI);
+      //     let x = cos(angle) * 100 + chunkSize / 2;
+      //     let y = sin(angle) * 100 + chunkSize / 2;
+      //     this.features.push(new Tree(x, y, this.x * chunkSize, this.y * chunkSize));
+      //   }
+      // }
 
       for (let i = 0; i < this.treeCount; i++) {
         this.features.push(new Tree(random(chunkSize), random(chunkSize), this.x * chunkSize, this.y * chunkSize));
@@ -82,7 +82,20 @@ class Chunk {
       }
     }
     for (let item of this.items) {
-      // item.update();
+      if (item.velocity.mag() > 0.125) {
+        for (let dx of [-0.5, 0.5]) {
+          for (let dy of [-0.5, 0.5]) {
+            let x = floor(player.position.x / chunkSize + worldSize * 0.5 + dx);
+            let y = floor(player.position.y / chunkSize + worldSize * 0.5 + dy);
+            if (x >= 0 && x < worldSize && y >= 0 && y < worldSize) {
+              for (let feature of chunks[x][y].features) {
+                item.collide(feature);
+              }
+            }
+          }
+        }
+      }
+      item.update();
       item.display();
     }
     pop();

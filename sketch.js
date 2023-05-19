@@ -105,15 +105,14 @@ function draw() {
     for (let i = chunk.features.length - 1; i >= 0; i--) {
       let feature = chunk.features[i];
 
-      player.collide(feature);
+      if (player.velocity.mag() > 0.125) player.collide(feature);
 
       if (player.armExtensionTime == 0.5625) {
         feature.punch();
-        if (feature.radius < 15 && random() < 0.2) {
+        if (feature.radius < 15 && random() < 10) {
           let loot = random(feature.lootTable);
           for (let i = 0; i < max(loot.quantity, 1); i++) {
-            chunk.items.push(new Item(loot.type, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(5)));
-            console.log(chunk.items);
+            chunk.items.push(new Item(loot.name, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(random(8))));
           }
           chunk.features.splice(i, 1);
         }
@@ -123,8 +122,8 @@ function draw() {
     for (let i = chunk.items.length - 1; i >= 0; i--) {
       let item = chunk.items[i];
 
-      if (player.position.dist(item.position) < 20) {
-        player.backpack.addItem(item.type);
+      if (player.position.dist(item.position) < 30) {
+        player.backpack.addItem(item.name);
         chunk.items.splice(i, 1);
       }
     }
