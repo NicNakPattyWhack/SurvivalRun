@@ -1,6 +1,7 @@
 class Backpack {
   constructor(count) {
     this.slots = [];
+    this.selected = 0;
     
     for (let i = 0; i < count; i++) {
       this.slots.push({ name: null, count: 0 });
@@ -12,7 +13,7 @@ class Backpack {
       if (slot.name == null) {
         slot.name = item;
         return true;
-      } else if (slot.name == item) {
+      } else if (slot.name == item && slot.count < 63) {
         slot.count++;
         return true;
       }

@@ -1,4 +1,5 @@
 var sounds = {};
+var textures = { items: {} };
 var audio;
 var seed;
 var worldSize = 64;
@@ -17,13 +18,18 @@ var fs = false;
 var maryHadALittleLamb = [3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 2, 0, 3, 3, 3, 0, 3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 3, 2, 1];
 
 function preload() {
+  textures.items.wood = createGraphics(40, 40);
+  textures.items.stone = createGraphics(40, 40);
+  createWoodTexture();
+  createStoneTexture();
+
   sounds.pop = loadSound("pop.ogg");
   sounds.hit = loadSound("hit.ogg");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  pixelDensity(1);
+  pixelDensity(2);
   // frameRate(60);
   noCursor();
 
@@ -109,10 +115,12 @@ function draw() {
 
       if (player.armExtensionTime == 0.5625) {
         feature.punch();
-        if (feature.radius < 15 && random() < 10) {
-          let loot = random(feature.lootTable);
-          for (let i = 0; i < max(loot.quantity, 1); i++) {
-            chunk.items.push(new Item(loot.name, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(random(8))));
+        if (feature.radius < 15 && random() < 0.5) {
+          for (let loot of feature.lootTable) {
+            let quantity = random(loot.quantity);
+            for (let j = 0; j < max(quantity, 1); j++) {
+              chunk.items.push(new Item(loot.name, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(random(8))));
+            }
           }
           chunk.features.splice(i, 1);
         }
@@ -122,9 +130,15 @@ function draw() {
     for (let i = chunk.items.length - 1; i >= 0; i--) {
       let item = chunk.items[i];
 
-      if (player.position.dist(item.position) < 30) {
-        player.backpack.addItem(item.name);
-        chunk.items.splice(i, 1);
+      if (item.time > 20) {
+        if (player.position.dist(item.position) < 50) {
+          item.velocity.add(p5.Vector.sub(player.position, item.position).setMag(1));
+        }
+
+        if (player.position.dist(item.position) < 20) {
+          player.backpack.addItem(item.name);
+          chunk.items.splice(i, 1);
+        }
       }
     }
   }
@@ -182,10 +196,11 @@ function draw() {
 
   for (let i in player.backpack.slots) {
     let item = player.backpack.slots[i];
+    let selected = i == player.backpack.selected;
 
     push();
     translate(width / 2 - 161 + 46 * i, height - 23);
-    displayBackpackSlot(item);
+    displayBackpackSlot(item, selected);
     pop();
   }
 
@@ -222,6 +237,8 @@ function draw() {
   // wood(0, 0, 1);
   // stone(0, 0, 1);
   // pop();
+
+  // image(textures.items.stone, 0, 0);
 }
 
 //=====================================================
@@ -247,10 +264,14 @@ function keyPressed() {
       w = ww;
       h = wh;
     }
-  }
-
-  if (key == "i") {
+  } else if (key == "i") {
     displayDebug = !displayDebug;
+  } else {
+    for (let i = 0; i < 9; i++) {
+      if (key == i + 1) {
+        player.backpack.selected = i;
+      }
+    }
   }
 }
 

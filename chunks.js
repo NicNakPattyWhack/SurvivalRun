@@ -81,6 +81,7 @@ class Chunk {
         feature.display();
       }
     }
+
     for (let item of this.items) {
       if (item.velocity.mag() > 0.125) {
         for (let dx of [-0.5, 0.5]) {

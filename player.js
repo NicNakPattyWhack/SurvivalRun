@@ -16,7 +16,7 @@ class Player {
   collide(other) {
     // console.log(other);
     // noLoop();
-    let d = this.position.dist(other.position)
+    let d = this.position.dist(other.position);
     if (d < this.radius + other.radius) {
       let force = calculateCollision(this, other);
       // if (other.type == "rock") force.setMag(0.5);
@@ -62,7 +62,7 @@ class Player {
     }
 
     // for (let feature of selectedChunk.features) {
-      
+
     // }
 
     this.velocity.set(0, 0);
@@ -74,7 +74,7 @@ class Player {
   }
 
   armExtensionAmt() {
-    return 1 - sq(this.armExtensionTime * 2 - 1)
+    return 1 - sq(this.armExtensionTime * 2 - 1);
   }
 
   display() {
@@ -91,6 +91,14 @@ class Player {
     fill(174, 120, 58);
     circle(lerp(12, 30, armExtensionAmt * this.punchingArm), lerp(12, 0, armExtensionAmt * this.punchingArm), 10);
     circle(lerp(12, 30, armExtensionAmt * !this.punchingArm), lerp(-12, 0, armExtensionAmt * !this.punchingArm), 10);
+
+    let holding = itemData[this.backpack.slots[this.backpack.selected].name];
+    if (holding != null) {
+      translate(lerp(12, 30, armExtensionAmt * this.punchingArm) + 2, lerp(12, 0, armExtensionAmt * this.punchingArm) + 2)
+      scale(0.5);
+      rotate(HALF_PI);
+      holding.display();
+    }
     pop();
   }
 }

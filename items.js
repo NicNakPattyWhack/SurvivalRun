@@ -39,10 +39,3 @@ class Item {
     pop();
   }
 }
-
-function displayItem(type) {
-  switch (type) {
-    case "wood": displayWoodItem(); break;
-    case "stone": displayStoneItem(); break;
-  }
-}
