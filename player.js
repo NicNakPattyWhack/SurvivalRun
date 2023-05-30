@@ -20,7 +20,7 @@ class Player {
     if (d < this.radius + other.radius) {
       let force = calculateCollision(this, other);
       // if (other.type == "rock") force.setMag(0.5);
-      this.velocity.add(force);
+      this.velocity.add(p5.Vector.mult(force, dt));
     }
   }
 
@@ -31,7 +31,7 @@ class Player {
       }
     }
 
-    this.position.add(this.velocity);
+    this.position.add(p5.Vector.mult(this.velocity, dt));
 
     this.chunk.set(floor(worldSize * 0.5 + this.position.x / chunkSize), floor(worldSize * 0.5 + this.position.y / chunkSize));
 
@@ -65,7 +65,7 @@ class Player {
 
     // }
 
-    this.velocity.set(0, 0);
+    
   }
 
   punch() {
@@ -94,7 +94,7 @@ class Player {
 
     let holding = itemData[this.backpack.slots[this.backpack.selected].name];
     if (holding != null) {
-      translate(lerp(12, 30, armExtensionAmt * this.punchingArm) + 2, lerp(12, 0, armExtensionAmt * this.punchingArm) + 2)
+      translate(lerp(12, 30, armExtensionAmt * this.punchingArm) + 2, lerp(12, 0, armExtensionAmt * this.punchingArm) + 2);
       scale(0.5);
       rotate(HALF_PI);
       holding.display();

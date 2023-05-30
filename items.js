@@ -1,5 +1,5 @@
 class Item {
-  constructor(name, x, y, chunkX, chunkY, v) {
+  constructor(name, x, y, chunkX, chunkY, p, v) {
     this.x = x;
     this.y = y;
     this.chunkX = chunkX;
@@ -19,14 +19,14 @@ class Item {
     if (d < this.radius + other.radius) {
       let force = calculateCollision(this, other);
       // if (other.type == "rock") force.setMag(0.5);
-      this.velocity.add(force);
+      this.velocity.add(p5.Vector.mult(force, dt));
     }
   }
 
   update() {
     if (this.velocity.mag() > 0.1) {
-      this.position.add(this.velocity);
-      this.velocity.mult(0.85);
+      this.position.add(p5.Vector.mult(this.velocity, dt));
+      this.velocity.mult(halfFrictionTime);
     }
 
     this.time++;

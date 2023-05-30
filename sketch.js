@@ -14,6 +14,8 @@ var plusone = [];
 var vignette;
 var showVignette = false;
 var displayDebug = false;
+var dt = 60 / 60;
+var halfFrictionTime = 0.5 ** (dt / 0.1);
 var fs = false;
 var maryHadALittleLamb = [3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 2, 0, 3, 3, 3, 0, 3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 3, 2, 1];
 
@@ -36,9 +38,9 @@ function setup() {
   w = width;
   h = height;
 
-  // seed = floor(random(1000));
-  seed = 2;
-  noiseDetail(8, 0.5);
+  seed = floor(random(1000));
+  // seed = 2;
+  noiseDetail(8, 0.3);
   randomSeed(seed);
   noiseSeed(seed);
 
@@ -79,6 +81,11 @@ function draw() {
 
   background(82, 148, 44);
   strokeWeight(4);
+
+  if (frameCount > 1) {
+    dt = 60 / frameRate();
+    halfFrictionTime = 0.5 ** (dt / 60);
+  }
 
   if (keyIsPressed === true) {
     if (keyIsDown(87)) {
@@ -158,7 +165,7 @@ function draw() {
         y < worldSize
       ) {
         chunks[x][y].generate();
-        chunks[x][y].load0();
+        if (displayDebug) chunks[x][y].load0();
         chunks[x][y].load1();
       }
     }
@@ -227,6 +234,8 @@ function draw() {
     pop();
   }
 
+  player.velocity.set(0, 0);
+
   // push();
   // translate(200, 200);
   // scale(5);
@@ -250,29 +259,60 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  if (key == "f") {
-    if (fs === false) {
-      fullscreen(true);
-      fs = true;
-      resizeCanvas(dw, dh);
-      w = dw;
-      h = dh;
-    } else {
-      fullscreen(false);
-      fs = false;
-      resizeCanvas(ww, wh);
-      w = ww;
-      h = wh;
-    }
-  } else if (key == "i") {
-    displayDebug = !displayDebug;
-  } else {
-    for (let i = 0; i < 9; i++) {
-      if (key == i + 1) {
-        player.backpack.selected = i;
+  switch (key) {
+    case "f":
+      if (fs === false) {
+        fullscreen(true);
+        fs = true;
+        resizeCanvas(dw, dh);
+        w = dw;
+        h = dh;
+      } else {
+        fullscreen(false);
+        fs = false;
+        resizeCanvas(ww, wh);
+        w = ww;
+        h = wh;
       }
-    }
+      break;
+    case "x":
+      // chunksSelected.items.push(new Item(player.backpack.slots[player.backpack.selected], player.position))
+      break;
+    case "i": displayDebug = !displayDebug; break;
+    case "1": player.backpack.selected = 0; break;
+    case "2": player.backpack.selected = 1; break;
+    case "3": player.backpack.selected = 2; break;
+    case "4": player.backpack.selected = 3; break;
+    case "5": player.backpack.selected = 4; break;
+    case "6": player.backpack.selected = 5; break;
+    case "7": player.backpack.selected = 6; break;
+    case "8": player.backpack.selected = 7; break;
+    case "9": player.backpack.selected = 8; break;
   }
+
+  // if (key == "f") {
+  //   if (fs === false) {
+  //     fullscreen(true);
+  //     fs = true;
+  //     resizeCanvas(dw, dh);
+  //     w = dw;
+  //     h = dh;
+  //   } else {
+  //     fullscreen(false);
+  //     fs = false;
+  //     resizeCanvas(ww, wh);
+  //     w = ww;
+  //     h = wh;
+  //   }
+  // } else if (key == "i") {
+  //   displayDebug = !displayDebug;
+  // } else {
+  //   for (let i = 0; i < 9; i++) {
+  //     if (key == i + 1) {
+  //       player.backpack.selected = i;
+  //     }
+  //   }
+  // }
 }
 
 //=====================================================
