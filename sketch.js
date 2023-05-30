@@ -27,6 +27,7 @@ function preload() {
 
   sounds.pop = loadSound("pop.ogg");
   sounds.hit = loadSound("hit.ogg");
+  sounds.blah = loadSound("blah.ogg");
 }
 
 function setup() {
@@ -77,7 +78,7 @@ function setup() {
 //=====================================================
 
 function draw() {
-  // /*ARY HAD A LITTLE LAMB*/ if (frameCount % 30 == 0) sounds.hit.play(0, maryHadALittleLamb[floor(frameCount / 30)] * 0.2 + 0.5, +(maryHadALittleLamb[floor(frameCount / 30)] > 0));
+  /*ARY HAD A LITTLE LAMB*/ if (frameCount % 30 == 0) sounds.blah.play(0, maryHadALittleLamb[floor(frameCount / 30)] * 0.2 + 0.5, +(maryHadALittleLamb[floor(frameCount / 30)] > 0));
 
   background(82, 148, 44);
   strokeWeight(4);

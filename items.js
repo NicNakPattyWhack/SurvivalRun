@@ -1,5 +1,5 @@
 class Item {
-  constructor(name, x, y, chunkX, chunkY, p, v) {
+  constructor(name, x, y, chunkX, chunkY, v) {
     this.x = x;
     this.y = y;
     this.chunkX = chunkX;
