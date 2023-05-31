@@ -28,10 +28,12 @@ class Chunk {
       // }
 
       for (let i = 0; i < this.treeCount; i++) {
-        this.features.push(new Tree(random(chunkSize), random(chunkSize), this.x * chunkSize, this.y * chunkSize));
+        // this.features.push(new Tree(random(chunkSize), random(chunkSize), this.x * chunkSize, this.y * chunkSize));
+        this.features.push(new Tree(this, createVector((this.x + random()) * chunkSize, (this.y + random()) * chunkSize)));
       }
       for (let i = 0; i < this.rockCount; i++) {
-        this.features.push(new Rock(random(chunkSize), random(chunkSize), this.x * chunkSize, this.y * chunkSize));
+        // this.features.push(new Rock(random(chunkSize), random(chunkSize), this.x * chunkSize, this.y * chunkSize));
+        this.features.push(new Rock(this, createVector((this.x + random()) * chunkSize, (this.y + random()) * chunkSize)));
       }
     }
     this.generated = true;

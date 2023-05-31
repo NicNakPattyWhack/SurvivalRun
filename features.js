@@ -1,11 +1,9 @@
 class Feature {
-  constructor(type, x, y, chunkX, chunkY) {
+  constructor(type, chunk, p) {
     this.type = type;
-    this.x = x;
-    this.y = y;
-    this.chunkX = chunkX;
-    this.chunkY = chunkY;
-    this.position = createVector(chunkX + this.x, chunkY + this.y);
+    this.chunk = chunk;
+    // this.position = createVector(chunkX + this.x, chunkY + this.y);
+    this.position = p.copy();
   }
 
   punch() {
@@ -25,8 +23,8 @@ class Feature {
 }
 
 class Tree extends Feature {
-  constructor(x, y, chunkX, chunkY) {
-    super("tree", x, y, chunkX, chunkY);
+  constructor(chunk, p) {
+    super("tree", chunk, p);
     this.radius = random(15, 25);
     this.strength = 1;
     this.trunkTint = color(128, 99, 61);
@@ -43,6 +41,7 @@ class Tree extends Feature {
     this.sway.set(noise(x, y, 0) - 0.5, noise(x, y, 10) - 0.5).mult(16);
 
     push();
+    strokeWeight(4)
     translate(this.position);
     // scale(50 + this.damage * 3);
     if (treePiece == "trunk") {

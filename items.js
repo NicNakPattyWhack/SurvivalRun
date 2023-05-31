@@ -1,10 +1,8 @@
 class Item {
-  constructor(name, x, y, chunkX, chunkY, v) {
-    this.x = x;
-    this.y = y;
-    this.chunkX = chunkX;
-    this.chunkY = chunkY;
-    this.position = createVector(chunkX + x, chunkY + y);
+  // constructor(name, x, y, chunkX, chunkY, v) {
+  constructor(name, chunk, p, v) {
+    this.chunk = chunk;
+    this.position = p.copy();
     this.velocity = v.copy();
     this.radius = 5;
     this.name = name;

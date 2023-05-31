@@ -3,6 +3,7 @@ let punch = 0;
 class Player {
   constructor(x, y) {
     this.chunk = createVector(worldSize * 0.5, worldSize * 0.5);
+    // this.chunk = chunks[32][32];
     this.position = createVector(x, y);
     this.velocity = createVector();
     this.facing = createVector(1, 0);
@@ -34,6 +35,7 @@ class Player {
     this.position.add(p5.Vector.mult(this.velocity, dt));
 
     this.chunk.set(floor(worldSize * 0.5 + this.position.x / chunkSize), floor(worldSize * 0.5 + this.position.y / chunkSize));
+    // this.chunk = chunks[floor(worldSize * 0.5 + this.position.x / chunkSize)][floor(worldSize * 0.5 + this.position.y / chunkSize)];
 
     if (this.position.x > worldSize * chunkSize * 0.5) {
       this.position.x -= this.position.x - worldSize * chunkSize * 0.5;
@@ -65,7 +67,7 @@ class Player {
 
     // }
 
-    
+
   }
 
   punch() {
@@ -81,6 +83,7 @@ class Player {
     push();
     translate(width / 2, height / 2);
     stroke(62, 143, 163);
+    strokeWeight(4);
     fill(82, 163, 183);
     circle(0, 0, 30);
 

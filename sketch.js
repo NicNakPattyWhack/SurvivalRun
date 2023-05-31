@@ -15,9 +15,11 @@ var vignette;
 var showVignette = false;
 var displayDebug = false;
 var dt = 60 / 60;
-var halfFrictionTime = 0.5 ** (dt / 0.1);
+var halfFrictionTime = 0.5 ** (dt / 5);
 var fs = false;
+var fps = 60;
 var maryHadALittleLamb = [3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 2, 0, 3, 3, 3, 0, 3, 2, 1, 2, 3, 3, 3, 0, 2, 2, 3, 2, 1];
+var happyBirthday = [3, 3, 4, 3, 5, 4, 0, 3, 3, 4, 3, 6, 5, 0, 3, 3, 7, 6, 5, 4, 3, 0, 5, 5, 4, 3, 4, 3];
 
 function preload() {
   textures.items.wood = createGraphics(40, 40);
@@ -78,14 +80,21 @@ function setup() {
 //=====================================================
 
 function draw() {
-  /*ARY HAD A LITTLE LAMB*/ if (frameCount % 30 == 0) sounds.blah.play(0, maryHadALittleLamb[floor(frameCount / 30)] * 0.2 + 0.5, +(maryHadALittleLamb[floor(frameCount / 30)] > 0));
+  // /*MARY HAD A LITTLE LAMB*/ if (frameCount % 30 == 0) sounds.blah.play(0, maryHadALittleLamb[floor(frameCount / 30)] * 0.2 + 0.5, +(maryHadALittleLamb[floor(frameCount / 30)] > 0));
+  // /*HAPPY BIRTHDAY*/ if (frameCount % 30 == 0) sounds.pop.play(0, happyBirthday[floor(frameCount / 30)] * 0.2 + 0.5, +(happyBirthday[floor(frameCount / 30)] > 0));
 
   background(82, 148, 44);
   strokeWeight(4);
 
+  stroke(255, 100, 100);
+  strokeWeight(10)
+  point(player.facing)
+
+  if (frameCount % 20 == 0) fps = frameRate();
+
   if (frameCount > 1) {
-    dt = 60 / frameRate();
-    halfFrictionTime = 0.5 ** (dt / 60);
+    dt = 60 / fps;
+    halfFrictionTime = 0.5 ** (dt / 5);
   }
 
   if (keyIsPressed === true) {
@@ -127,7 +136,8 @@ function draw() {
           for (let loot of feature.lootTable) {
             let quantity = random(loot.quantity);
             for (let j = 0; j < max(quantity, 1); j++) {
-              chunk.items.push(new Item(loot.name, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(random(8))));
+              // chunk.items.push(new Item(loot.name, feature.x, feature.y, feature.chunkX, feature.chunkY, p5.Vector.random2D().mult(random(4, 8))));
+              chunk.items.push(new Item(loot.name, chunk, feature.position, p5.Vector.random2D().mult(random(4, 8))));
             }
           }
           chunk.features.splice(i, 1);
@@ -231,7 +241,7 @@ function draw() {
     text(`Chunk: ${player.chunk.x - worldSize * 0.5}, ${player.chunk.y - worldSize * 0.5}`, 4, 32);
     text(`Velocity: ${nfs(player.velocity.x, 0, 2)}, ${nfs(player.velocity.y, 0, 2)}`, 4, 48);
     text(`Time: ${frameCount}`, 4, 64);
-    text(`FPS: ${round(frameRate(), 1)}`, 4, 80);
+    text(`FPS: ${round(fps, 1)}`, 4, 80);
     pop();
   }
 
@@ -277,7 +287,9 @@ function keyPressed() {
       }
       break;
     case "x":
-      // chunksSelected.items.push(new Item(player.backpack.slots[player.backpack.selected], player.position))
+      // chunks[player.chunk.x][player.chunk.y].items.push(new )
+      // chunks[player.chunk.x][player.chunk.y].push(new Item(player.backpack.slots[player.backpack.selected], player.position, player.facing))
+      chunks[player.chunk.x][player.chunk.y].push(new Item("wood", chunks[player.chunk.x][player.chunk.y], player.position, p5.Vector.setMag(player.facing, 4)))
       break;
     case "i": displayDebug = !displayDebug; break;
     case "1": player.backpack.selected = 0; break;
