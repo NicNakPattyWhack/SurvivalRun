@@ -91,8 +91,11 @@ class Chunk {
             let x = floor(player.position.x / chunkSize + worldSize * 0.5 + dx);
             let y = floor(player.position.y / chunkSize + worldSize * 0.5 + dy);
             if (x >= 0 && x < worldSize && y >= 0 && y < worldSize) {
-              for (let feature of chunks[x][y].features) {
+              // for (let feature of chunks[x][y].features) {
+                for (let i = chunks[x][y].features.length - 1; i >= 0; i--) {
+                  let feature = chunks[x][y].features[i]
                 item.collide(feature);
+                if (feature.radius < 15 && random() < 0.5) this.features.splice(i, 1)
               }
             }
           }

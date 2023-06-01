@@ -12,6 +12,8 @@ class Player {
     this.punchingArm = 0;
     this.radius = 15;
     this.backpack = new Backpack(9);
+    this.selectedSlot = null;
+    this.holding = null;
   }
 
   collide(other) {
@@ -50,7 +52,7 @@ class Player {
       this.position.y -= this.position.y + worldSize * chunkSize * 0.5;
     }
 
-    this.facing.set(mouseX - width / 2, mouseY - height / 2);
+    this.facing.set(mouseX - width / 2, mouseY - height / 2).normalize();
 
     // this.armExtensionAmt = max(this.armExtensionAmt + this.armExtensionVel, 0);
     // this.armExtensionVel -= 0.05;
@@ -62,6 +64,11 @@ class Player {
       this.isPunching = false;
       this.armExtensionTime = 0;
     }
+
+    player.facing.set(cos(frameCount * 0.1), sin(frameCount * 0.1))
+    this.selectedSlot = this.backpack.slots[this.backpack.selected];
+    if (this.selectedSlot.name != null) this.holding = this.selectedSlot;
+    else this.holding = null;
 
     // for (let feature of selectedChunk.features) {
 
@@ -95,12 +102,11 @@ class Player {
     circle(lerp(12, 30, armExtensionAmt * this.punchingArm), lerp(12, 0, armExtensionAmt * this.punchingArm), 10);
     circle(lerp(12, 30, armExtensionAmt * !this.punchingArm), lerp(-12, 0, armExtensionAmt * !this.punchingArm), 10);
 
-    let holding = itemData[this.backpack.slots[this.backpack.selected].name];
-    if (holding != null) {
+    if (this.holding != null) {
       translate(lerp(12, 30, armExtensionAmt * this.punchingArm) + 2, lerp(12, 0, armExtensionAmt * this.punchingArm) + 2);
       scale(0.5);
       rotate(HALF_PI);
-      holding.display();
+      itemData[this.holding.name].display();
     }
     pop();
   }

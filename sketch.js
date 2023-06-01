@@ -87,8 +87,8 @@ function draw() {
   strokeWeight(4);
 
   stroke(255, 100, 100);
-  strokeWeight(10)
-  point(player.facing)
+  strokeWeight(10);
+  point(player.facing);
 
   if (frameCount % 20 == 0) fps = frameRate();
 
@@ -226,6 +226,7 @@ function draw() {
   fill(200, 50);
   circle(mouseX, mouseY, 20);
   stroke(175, 50);
+  strokeWeight(4);
   noFill();
   circle(mouseX, mouseY, 24);
 
@@ -246,6 +247,11 @@ function draw() {
   }
 
   player.velocity.set(0, 0);
+
+  if (player.holding != null) {
+    chunks[player.chunk.x][player.chunk.y].items.push(new Item(player.holding.name, chunks[player.chunk.x][player.chunk.y], player.position, p5.Vector.mult(player.facing, 48)));
+    player.selectedSlot.count--;
+  }
 
   // push();
   // translate(200, 200);
@@ -289,7 +295,11 @@ function keyPressed() {
     case "x":
       // chunks[player.chunk.x][player.chunk.y].items.push(new )
       // chunks[player.chunk.x][player.chunk.y].push(new Item(player.backpack.slots[player.backpack.selected], player.position, player.facing))
-      chunks[player.chunk.x][player.chunk.y].push(new Item("wood", chunks[player.chunk.x][player.chunk.y], player.position, p5.Vector.setMag(player.facing, 4)))
+      if (player.holding != null) {
+        chunks[player.chunk.x][player.chunk.y].items.push(new Item(player.holding.name, chunks[player.chunk.x][player.chunk.y], player.position, p5.Vector.mult(player.facing, 48)));
+        player.selectedSlot.count--;
+      }
+      //if (player.selectedSlot.count < 0) player.selectedSlot.name = null; player.selectedSlot.count = 0;
       break;
     case "i": displayDebug = !displayDebug; break;
     case "1": player.backpack.selected = 0; break;

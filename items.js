@@ -16,6 +16,7 @@ class Item {
     let d = this.position.dist(other.position)
     if (d < this.radius + other.radius) {
       let force = calculateCollision(this, other);
+      other.radius -= 2;
       // if (other.type == "rock") force.setMag(0.5);
       this.velocity.add(p5.Vector.mult(force, dt));
     }
